@@ -1,13 +1,16 @@
 const express = require('express');
-const { providersMock } = require('../utils/mocks/providers');
+const ProvidersService = require('../services/providers');
 
 function providersApi(app) {
   const router = express.Router();
   app.use('/api/providers', router);
 
+  const providersService = new ProvidersService();
+
   router.get('/', async function (req, res, next) {
+    const { tags } = req.query;
     try {
-      const providers = await Promise.resolve(providersMock);
+      const providers = await providersService.getProviders({ tags });
 
       res.status(200).json({
         data: providers,
@@ -19,8 +22,9 @@ function providersApi(app) {
   });
 
   router.get('/:providerId', async function (req, res, next) {
+    const { providerId } = req.params;
     try {
-      const providers = await Promise.resolve(providersMock[0]);
+      const providers = await providersService.getProvider({ providerId });
 
       res.status(200).json({
         data: providers,
@@ -32,8 +36,11 @@ function providersApi(app) {
   });
 
   router.post('/', async function (req, res, next) {
+    const { body: provider } = req;
     try {
-      const createdProviderId = await Promise.resolve(providersMock[0].id);
+      const createdProviderId = await providersService.createProvider({
+        provider,
+      });
       res.status(201).json({
         data: createdProviderId,
         message: 'provider created',
@@ -43,9 +50,14 @@ function providersApi(app) {
     }
   });
 
-  router.put('/:movieId', async function (req, res, next) {
+  router.put('/:providerId', async function (req, res, next) {
+    const { providerId } = req.params;
+    const { body: provider } = req;
     try {
-      const updatedProviderId = await Promise.resolve(providersMock[0].id);
+      const updatedProviderId = await providersService.updateProvider({
+        providerId,
+        provider,
+      });
 
       res.status(200).json({
         data: updatedProviderId,
@@ -56,9 +68,12 @@ function providersApi(app) {
     }
   });
 
-  router.delete('/:movieId', async function (req, res, next) {
+  router.delete('/:providerId', async function (req, res, next) {
+    const { providerId } = req.params;
     try {
-      const deletedProviderId = await Promise.resolve(providersMock[0].id);
+      const deletedProviderId = await providersService.deleteProvider({
+        providerId,
+      });
 
       res.status(200).json({
         data: deletedProviderId,

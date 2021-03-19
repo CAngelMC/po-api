@@ -6,7 +6,13 @@ const config = {
   dbUser: process.env.DB_USER,
   dbPassword: process.env.DB_PASSWORD,
   dbHost: process.env.DB_HOST,
-  dbName: process.env.DB_NAME
+  dbName: process.env.DB_NAME,
+  authJwtSecret: process.env.AUTH_JWT_SECRET,
+  DEFAULT_ADMIN_PASSWORD: process.env.DEFAULT_ADMIN_PASSWORD,
+  DEFAULT_USER_PASSWORD: process.env.DEFAULT_USER_PASSWORD,
+  AUTH_JWT_SECRET: process.env.AUTH_JWT_SECRET,
+  PUBLIC_API_KEY_TOKEN: process.env.PUBLIC_API_KEY_TOKEN,
+  ADMIN_API_KEY_TOKEN: process.env.ADMIN_API_KEY_TOKEN,
 };
 
 module.exports = { config };
